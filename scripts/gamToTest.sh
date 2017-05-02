@@ -14,10 +14,10 @@ compare_file=$2
 now=$(date '+%d%m%Y%H%M%S')
 
 echo converting gam to json
-vg view -a $input > $file.json
+vg view -a $input > $output/$file.json
 
 echo writing file $output/temp_test_$now
-python3 jsonParser.py < $file.json >$output/temp_test_$now
+python3 jsonParser.py < $output/$file.json >$output/temp_test_$now
 echo removing $file.json
 rm $file.json
 
