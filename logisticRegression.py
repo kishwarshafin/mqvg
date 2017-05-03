@@ -80,7 +80,7 @@ class LogisticRegression:
                 else:
                     p = np.log10(float(predictions[index][0]))
                 qValue = int(-10 * p)
-                print(predictions[index][1], qValue)
+                #print(predictions[index], qValue)
                 if row[PREDICT_COLUMNS[3]]:
                     print(row[PREDICT_COLUMNS[0]], "\t", row[PREDICT_COLUMNS[1]], "\t",row[PREDICT_COLUMNS[2]], "\t", qValue,"\t", row[PREDICT_COLUMNS[3]], file=f)
                 else:
