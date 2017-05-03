@@ -81,9 +81,9 @@ class LogisticRegression:
                     p = 0
                 qValue = int(-10 * int(p))
                 if row[PREDICT_COLUMNS[3]]:
-                    print(row[PREDICT_COLUMNS[0]], "\t", row[PREDICT_COLUMNS[1]], "\t",row[PREDICT_COLUMNS[2]], "\t", qValue,row[PREDICT_COLUMNS[3]], "\t", file=f)
+                    print(row[PREDICT_COLUMNS[0]], "\t", row[PREDICT_COLUMNS[1]], "\t",row[PREDICT_COLUMNS[2]], "\t", qValue,"\t", row[PREDICT_COLUMNS[3]], file=f)
                 else:
-                    print(row[PREDICT_COLUMNS[0]], "\t", row[PREDICT_COLUMNS[1]], "\t", row[PREDICT_COLUMNS[2]], "\t", file=f)
+                    print(row[PREDICT_COLUMNS[0]], "\t", row[PREDICT_COLUMNS[1]], "\t", row[PREDICT_COLUMNS[2]], "\t", qValue,"\t", "0", file=f)
                 index += 1
 
 class IO_handler:
