@@ -75,12 +75,10 @@ class LogisticRegression:
 
         with open(outputDirectory+"/"+outputFile, 'w') as f:
             for idx, row in self.predictDataFrame.iterrows():
-                if float(predictions[index][1]) >= 1.0:
-                    p = np.log10(float(predictions[index][1])-0.0000001)
-                elif float(predictions[index][1]) <= 0.00000001:
+                if float(predictions[index][0]) >= 1.0:
                     p = 0
                 else:
-                    p = np.log10(float(predictions[index][1]))
+                    p = np.log10(float(predictions[index][0]))
                 qValue = int(-10 * p)
                 print(predictions[index][1], qValue)
                 if row[PREDICT_COLUMNS[3]]:
