@@ -44,11 +44,7 @@ class LogisticRegression:
         mapping_quality = tf.contrib.layers.real_valued_column("mapping_quality")
         best_score = tf.contrib.layers.real_valued_column("best_score")
         wide_columns = [mapping_quality, best_score]
-        self.model = tf.contrib.learn.LinearClassifier(feature_columns=wide_columns,
-                                              optimizer=tf.train.FtrlOptimizer(learning_rate=0.1,
-                                                                               l1_regularization_strength=1.0,
-                                                                               l2_regularization_strength=1.0),
-                                              model_dir=modelDirectory)
+        self.model = tf.contrib.learn.LinearClassifier(feature_columns=wide_columns, model_dir=modelDirectory)
 
     def input_fn(self,df):
         continuous_cols = {k: tf.constant(df[k].values) for k in CONTINUOUS_COLUMNS}
