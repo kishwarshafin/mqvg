@@ -40,11 +40,15 @@ class LogisticRegression:
     def setPredictData(self, predictDataFrame):
         self.predictDataFrame = predictDataFrame
 
-    def createEstimator(self, modelDirectory):
+    def createEstimator(self, learningRate, modelDirectory):
         mapping_quality = tf.contrib.layers.real_valued_column("mapping_quality")
         best_score = tf.contrib.layers.real_valued_column("best_score")
         wide_columns = [mapping_quality, best_score]
-        self.model = tf.contrib.learn.LinearClassifier(feature_columns=wide_columns, model_dir=modelDirectory)
+        self.model = tf.contrib.learn.LinearClassifier(feature_columns=wide_columns,
+                                              optimizer=tf.train.FtrlOptimizer(learning_rate=learningRate,
+                                                                               l1_regularization_strength=1.0,
+                                                                               l2_regularization_strength=1.0),
+                                              model_dir=modelDirectory)
 
     def input_fn(self,df):
         continuous_cols = {k: tf.constant(df[k].values) for k in CONTINUOUS_COLUMNS}
@@ -121,9 +125,8 @@ class IO_handler:
             self.outputFileName = FLAGS.output_file
             self.outputDirectory = FLAGS.output_dir
             predict = 1
-
         regressionObject = LogisticRegression()
-        regressionObject.createEstimator(self.modelDirectory)
+        regressionObject.createEstimator(FLAGS.learning_rate, self.modelDirectory)
         if train:
             sys.stderr.write(TextColor.GREEN+"INFO: TRAINING THE MODEL\n"+TextColor.END)
             regressionObject.setTrainData(self.trainDataFrame, self.trainSteps)
@@ -202,6 +205,12 @@ if __name__ == "__main__":
       type=str,
       default="output"+str(datetime.now()).replace(' ','')+".txt",
       help="Path to the prediction data."
+  )
+  parser.add_argument(
+      "--learning_rate",
+      type=float,
+      default=0.1,
+      help="Learning rate of the model."
   )
   FLAGS, unparsed = parser.parse_known_args()
   checkModelDir()
