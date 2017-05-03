@@ -13,6 +13,7 @@ output=$3
 compare_file=$2
 now=$(date '+%d%m%Y%H%M%S')
 
+echo output will be $output/train_file_$now
 echo converting gam to json
 vg view -a $input > $output/temp_json_$now.json
 
