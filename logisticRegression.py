@@ -9,7 +9,7 @@ import pandas as pd
 import tensorflow as tf
 from datetime import datetime
 
-COLUMNS = ["name", "position", "mapping_quality", "best_score", "mapped_state"]
+COLUMNS = ["name", "mapping_quality", "best_score", "mapped_state"]
 PREDICT_COLUMNS = ["name", "mapping_quality", "best_score", "mapped_state"]
 LABEL_COLUMN = "mapped_state"
 CONTINUOUS_COLUMNS = ["mapping_quality", "best_score"]
@@ -89,8 +89,8 @@ class IO_handler:
             names=columns,
             engine=engine,
             sep=separator)
-        if dropFlag:
-            df = df.dropna(how='any', axis=0)
+
+        df = df.dropna(how='any', axis=0)
         return df
 
     def Train(self, regressionObject):
