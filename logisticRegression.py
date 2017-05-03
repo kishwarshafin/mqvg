@@ -41,6 +41,7 @@ class LogisticRegression:
         self.predictDataFrame = predictDataFrame
 
     def createEstimator(self, learningRate, modelDirectory):
+        print("Learning Rate: ",learningRate)
         mapping_quality = tf.contrib.layers.real_valued_column("mapping_quality")
         best_score = tf.contrib.layers.real_valued_column("best_score")
         wide_columns = [mapping_quality, best_score]
