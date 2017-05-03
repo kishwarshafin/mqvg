@@ -75,9 +75,9 @@ class LogisticRegression:
 
         with open(outputDirectory+"/"+outputFile, 'w') as f:
             for idx, row in self.predictDataFrame.iterrows():
-                try:
+                if float(predictions[index][0]) > 0.0000000001:
                     p = np.log10(float(predictions[index][0]))
-                except ZeroDivisionError:
+                else:
                     p = 0
                 qValue = int(-10 * int(p))
                 if row[PREDICT_COLUMNS[3]]:
