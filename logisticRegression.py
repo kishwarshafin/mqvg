@@ -10,7 +10,6 @@ import tensorflow as tf
 from datetime import datetime
 
 COLUMNS = ["name", "mapping_quality", "best_score", "mapped_state"]
-PREDICT_COLUMNS = ["name", "mapping_quality", "best_score", "mapped_state"]
 LABEL_COLUMN = "mapped_state"
 CONTINUOUS_COLUMNS = ["mapping_quality", "best_score"]
 
@@ -80,11 +79,10 @@ class LogisticRegression:
                 else:
                     p = np.log10(float(predictions[index][0]))
                 qValue = int(-10 * p)
-                #print(predictions[index], qValue)
-                if row[PREDICT_COLUMNS[3]]:
-                    print(row[PREDICT_COLUMNS[0]], "\t", row[PREDICT_COLUMNS[1]], "\t",row[PREDICT_COLUMNS[2]], "\t", qValue,"\t", row[PREDICT_COLUMNS[3]], file=f)
+                if not np.isnan(row[COLUMNS[3]]):
+                    print(row[COLUMNS[0]], "\t", row[COLUMNS[1]], "\t",row[COLUMNS[2]], "\t", qValue,"\t", row[COLUMNS[3]], file=f)
                 else:
-                    print(row[PREDICT_COLUMNS[0]], "\t", row[PREDICT_COLUMNS[1]], "\t", row[PREDICT_COLUMNS[2]], "\t", qValue,"\t", "0", file=f)
+                    print(row[COLUMNS[0]], "\t", row[COLUMNS[1]], "\t", row[COLUMNS[2]], "\t", qValue, file=f)
                 index += 1
 
 class IO_handler:
@@ -94,8 +92,8 @@ class IO_handler:
             names=columns,
             engine=engine,
             sep=separator)
-
-        df = df.dropna(how='any', axis=0)
+        if dropFlag:
+            df = df.dropna(how='any', axis=0)
         return df
 
     def Train(self, regressionObject):
@@ -127,7 +125,7 @@ class IO_handler:
                 parser.print_help()
                 sys.stderr.write(TextColor.RED + "ERROR: " + FLAGS.predict_data + " FILE NOT FOUND"+TextColor.END)
                 raise FileNotFoundError
-            self.predictDataFrame = self._GetDataFrame_(FLAGS.predict_data, PREDICT_COLUMNS, "python", "\t", 0)
+            self.predictDataFrame = self._GetDataFrame_(FLAGS.predict_data, COLUMNS, "python", "\t", 0)
             self.outputFileName = FLAGS.output_file
             self.outputDirectory = FLAGS.output_dir
             predict = 1
@@ -144,11 +142,11 @@ class IO_handler:
             regressionObject.Evaluate_Model()
             sys.stderr.write(TextColor.GREEN+"INFO: EVALUATION FINISHED\n"+TextColor.END)
         if predict:
-            sys.stderr.write(TextColor.GREEN+"INFO: PREDICTING BASED ON TRAINED MODEL"+TextColor.END)
+            sys.stderr.write(TextColor.GREEN+"INFO: PREDICTING BASED ON TRAINED MODEL\n"+TextColor.END)
             regressionObject.setPredictData(self.predictDataFrame)
             regressionObject.Predict_Using_TrainedModel(self.outputDirectory, self.outputFileName)
             sys.stderr.write(TextColor.GREEN+"INFO: PREDICTION FINISHED \n"+TextColor.END)
-            sys.stderr.write(TextColor.GREEN + "INFO: OUTPUT SAVED IN: "+self.outputDirectory+self.outputFileName+"\n" + TextColor.END)
+            sys.stderr.write(TextColor.GREEN + "INFO: OUTPUT SAVED IN: "+self.outputDirectory+"/"+self.outputFileName+"\n" + TextColor.END)
 
 
 
@@ -209,7 +207,7 @@ if __name__ == "__main__":
   parser.add_argument(
       "--output_file",
       type=str,
-      default="output"+str(datetime.now()).replace(' ','')+".txt",
+      default="output"+str(datetime.now()).replace(' ',''),
       help="Path to the prediction data."
   )
   parser.add_argument(

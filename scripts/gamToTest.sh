@@ -20,7 +20,7 @@ vg view -a $input > $output/temp_json_$now.json
 echo writing file $output/temp_test_$now
 python3 jsonParser.py < $output/temp_json_$now.json >$output/temp_test_$now
 echo removing $file.json
-rm temp_json_$now.json
+rm $output/temp_json_$now.json
 
 echo writing file $output/train_file_$now
 python3 makeTestData.py --compare_file $compare_file --tab_converted_file $output/temp_test_$now >$output/train_file_$now
