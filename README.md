@@ -3,7 +3,6 @@
 <i>MQVG</i> provides a calibration of mapping qualities provided by vg. This calibration can be used to better estimate the confidence of a mapped set to a reference variation graph. Primarily designed for human genome variation graph, this model can be used for other organisms too.
 
 ## Usage
--------
 ### Building
 #### vg
 To begin, you need to make sure you have [vg](https://github.com/vgteam/vg) installed in your system and it is available in your path. First install all the requirements. For linux based systems you can install the dependencies with apt-get.
@@ -47,7 +46,6 @@ cd mqvg/scripts/
 ./testSmall.sh
 ```
 ## Testing, Training and Evaluation data model
--------
 All dataset used for <i>MQVG</i> needs to be in a specific format. The gam converter files provided with <i>MQVG</i> can be used to convert vg produced gam files to train and test datasets.<br/>
 #### Train Data
 The train data follows the following format:
@@ -88,7 +86,6 @@ cd /mqvg/scripts
 ```
 
 ## <i>MQVG</i> Command line
--------
 After generating testing and training data, we can run <i>MQVG</i>. A simple run can be:
 ```sh
 python3 logisticRegression.py --model_dir="./runDir" --train_step=2000  --train_data="./inputs/train_1M" --test_data="./inputs/evaluate_2M" --predict_data="./inputs/predict_1M"
