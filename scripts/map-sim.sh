@@ -18,6 +18,6 @@ echo combining results
 
 # This can then be rendered using scripts in the vg repo
 echo rendering ROC
-rscript $vg_dir/scripts/plot-roc.R $output/results-vg_$now.tsv.gz $output/roc-vg-vglr_$now.pdf
+Rscript $vg_dir/scripts/plot-roc.R $output/results-vg_$now.tsv.gz $output/roc-vg-vglr_$now.pdf
 echo rendering QQ
-rscript $vg_dir/scripts/plot-qq.R $output/results-vg_$now.tsv.gz $output/qq-vg-vglr_$now.pdf
+Rscript $vg_dir/scripts/plot-qq.R $output/results-vg_$now.tsv.gz $output/qq-vg-vglr_$now.pdf
