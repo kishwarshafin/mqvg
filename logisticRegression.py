@@ -130,7 +130,7 @@ class IO_handler:
             self.outputDirectory = FLAGS.output_dir
             predict = 1
         regressionObject = LogisticRegression()
-        regressionObject.createEstimator(FLAGS.learning_rate, FLAGS.l1_regularization_rate, FLAGS.l2_regularization_rate, self.modelDirectory)
+        regressionObject.createEstimator(FLAGS.learning_rate, FLAGS.l1_regularization_strength, FLAGS.l2_regularization_strength, self.modelDirectory)
         if train:
             sys.stderr.write(TextColor.GREEN+"INFO: TRAINING THE MODEL\n"+TextColor.END)
             regressionObject.setTrainData(self.trainDataFrame, self.trainSteps)
@@ -175,7 +175,7 @@ if __name__ == "__main__":
       "--model_dir",
       type=str,
       default="./modelDir",
-      help="Base directory for output models."
+      help="Base directory to save checkpoints."
   )
   parser.add_argument(
       "--train_steps",
@@ -202,13 +202,13 @@ if __name__ == "__main__":
       "--output_dir",
       type=str,
       default="./output",
-      help="Path to the prediction data."
+      help="Output directory."
   )
   parser.add_argument(
       "--output_file",
       type=str,
       default="output"+str(datetime.now()).replace(' ',''),
-      help="Path to the prediction data."
+      help="Output file name."
   )
   parser.add_argument(
       "--learning_rate",
@@ -217,16 +217,16 @@ if __name__ == "__main__":
       help="Learning rate of the model."
   )
   parser.add_argument(
-      "--l1_regularization_rate",
+      "--l1_regularization_strength",
       type=float,
       default=1.0,
-      help="L1 Regularization rate"
+      help="L1 Regularization strength"
   )
   parser.add_argument(
-      "--l2_regularization_rate",
+      "--l2_regularization_strength",
       type=float,
       default=1.0,
-      help="L2 Regularization rate"
+      help="L2 Regularization strength"
   )
   FLAGS, unparsed = parser.parse_known_args()
   checkModelDir()
