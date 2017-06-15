@@ -8,6 +8,7 @@ import os
 import pandas as pd
 import tensorflow as tf
 from datetime import datetime
+from tensorflow.python.saved_model import builder as saved_model_builder
 
 COLUMNS = ["name", "mapping_quality", "best_score", "mapped_state"]
 LABEL_COLUMN = "mapped_state"
@@ -58,6 +59,9 @@ class LogisticRegression:
 
     def Train_Model(self):
         self.model.fit(input_fn=lambda: self.input_fn(self.trainDataFrame), steps=self.trainSteps)
+        self.model.export_savedmodel("./modelDir",
+                          input_fn = lambda: self.input_fn(self.trainDataFrame),
+                          use_deprecated_input_fn = False)
 
     def Evaluate_Model(self):
         evaluationResult = self.model.evaluate(input_fn=lambda: self.input_fn(self.testDataFrame), steps=1)

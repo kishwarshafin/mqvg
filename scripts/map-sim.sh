@@ -12,10 +12,12 @@ output=$2
 vg_dir=$3
 #mkdir -p $output
 
-echo combining results
-( cat $input | awk 'BEGIN { OFS="\t"; print "correct", "mq", "score", "aligner"; } { print $5, $4, $3, "vg-lr" }' ;
-  cat $input | awk 'BEGIN { OFS="\t"} { print $5, $2, $3, "vg" }' ;) | gzip >$output/results-vg_$now.tsv.gz
+#echo combining results
+#( cat $input | awk 'BEGIN { OFS="\t"; print "correct", "mq", "score", "aligner"; } { print $5, $4, $3, "Calibrated-Score" }' ;) | gzip >$output/results-vg_$now.tsv.gz
 
+echo combining results
+( cat $input | awk 'BEGIN { OFS="\t"; print "correct", "mq", "score", "aligner"; } { print $5, $4, $3, "Calibrated-Score" }' ;
+cat $input | awk 'BEGIN { OFS="\t"} { print $5, $2, $3, "Empirical-Score" }' ;) | gzip >$output/results-vg_$now.tsv.gz
 # This can then be rendered using scripts in the vg repo
 echo rendering ROC
 Rscript $vg_dir/scripts/plot-roc.R $output/results-vg_$now.tsv.gz $output/roc-vg-vglr_$now.pdf
